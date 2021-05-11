@@ -7,4 +7,5 @@ steps:
       '--runtime', 'python39',
       '--entry-point', 'main',
       '--trigger-topic', '${_TRIGGER_TOPIC}',
+      '--set-env-vars', 'SENDGRID_API_KEY_SECRET_NAME=${_SENDGRID_API_KEY_SECRET_NAME}'
     ]

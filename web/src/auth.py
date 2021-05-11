@@ -21,7 +21,8 @@ class AuthMiddleware():
     USER_INFO_FIELDS = [
         'email',
         'picture',
-        'name'
+        'name',
+        'given_name'
     ]
 
     def __init__(self, app):

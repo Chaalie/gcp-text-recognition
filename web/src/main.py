@@ -57,9 +57,10 @@ def recognize():
         )
 
         file_ref.set({
-            'name': file.filename,
-            'original_file': f'gs://{bucket.name}/{blob.name}',
-            'sender_email': request.environ['user']['email']
+            'file_name': file.filename,
+            'original_file': f'https://storage.googleapis.com/{bucket.name}/{blob.name}',
+            'sender_email': request.environ['user']['email'],
+            'sender_firstname': request.environ['user']['given_name']
         })
 
         flash('', 'upload_success')
