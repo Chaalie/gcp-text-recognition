@@ -35,6 +35,14 @@
                 </div>
             {% endif %}
         {% endwith %}
+        {% with duplicates = get_flashed_messages(category_filter=["upload_duplicate"]) %}
+            {% if duplicates %}
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading">We found out, that the file you uploaded was already processed!</h4>
+                    <p>If you still want to receive an email with a recognized text from this image, please <strong>click here</strong>.</p>
+                </div>
+            {% endif %}
+        {% endwith %}
         {% with errors = get_flashed_messages(category_filter=["upload_error"]) %}
             {% if errors %}
                 <div class="alert alert-danger" role="alert">

@@ -3,4 +3,5 @@ Werkzeug==1.0.1
 google-auth
 google-cloud-storage
 google-cloud-secret-manager
+google-cloud-firestore
 python-dotenv

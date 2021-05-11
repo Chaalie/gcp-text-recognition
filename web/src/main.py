@@ -1,5 +1,5 @@
 from flask import Flask, flash, render_template, redirect, request, url_for, Markup
-from google.cloud import storage
+from google.cloud import storage, firestore
 
 import hashlib
 
@@ -42,16 +42,28 @@ def recognize():
         return redirect(url_for('home'))
 
     file_content = file.read()
-    file_hash = hashlib.md5(file_content).hexdigest()
+    file_id = hashlib.md5(file_content).hexdigest()
 
-    bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
-    blob = bucket.blob(file_hash)
-    blob.upload_from_string(
-        file_content,
-        content_type=file.content_type
-    )
+    db = firestore.Client()
+    file_ref = db.collection('text-recognitions').document(file_id)
+    if file_ref.get().exists:
+        flash('', 'upload_duplicate')
+    else:
+        bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
+        blob = bucket.blob(file_id)
+        blob.upload_from_string(
+            file_content,
+            content_type=file.content_type
+        )
 
-    flash('', 'upload_success')
+        file_ref.set({
+            'name': file.filename,
+            'original_file': f'gs://{bucket.name}/{blob.name}',
+            'sender_email': request.environ['user']['email']
+        })
+
+        flash('', 'upload_success')
+
     return redirect(url_for('home'))
 
 
