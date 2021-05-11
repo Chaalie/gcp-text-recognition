@@ -3,10 +3,8 @@ steps:
     args: [
       'functions', 'deploy', 'image-transformer',
       '--source', 'cloud-functions/image-transformer/src/',
-      '--region', 'europe-central2',
       '--runtime', 'python39',
       '--entry-point', 'main',
-      '--trigger-bucket', '${_SOURCE_BUCKET}',
+      '--trigger-bucket', '${_TRIGGER_BUCKET}',
       '--set-env-vars', 'DESTINATION_BUCKET=${_DESTINATION_BUCKET}'
     ]
-timeout: "600s"
