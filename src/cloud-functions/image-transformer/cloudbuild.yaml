@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'image-transformer',
+      '--source', '.',
+      '--region', 'europe-central2',
+      '--runtime', 'python39',
+      '--entry-point', 'main',
+      '--trigger-bucket', '${_SOURCE_BUCKET}',
+      '--set-env-vars', 'DESTINATION_BUCKET=${_DESTINATION_BUCKET}'
+    ]
+timeout: "600s"
