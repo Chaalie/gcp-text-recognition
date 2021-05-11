@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}
+
+{% block header %}
+    <header>
+        <nav class="navbar navbar-dark navbar-expand-sm bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Text recognition</a>
+    
+                <div class="collapse navbar-collapse">
+                    <ul class="ms-auto navbar-nav">
+                        <li class="nav-item my-auto">
+                            <span class="nav-link nav-text">
+                                Hello, {{ user.name }}
+                            </span>
+                        </li>
+                        <li class="nav-item me-3 my-auto">
+                            <img class="rounded-circle" style="width: 35px;" src="{{ user.picture }}"/>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <button type="button" class="btn btn-outline-light btn-sm" id="sign-out">Logout</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block main %}
+<div class="d-flex flex-column justify-content-center h-100">
+        <h1 class="mb-3">Recognize text on your photo:</h1>
+        <form action="/recognize">
+            <div class="mb-3 w-50">
+                <input class="form-control form-control-lg" type="file" id="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+        </form>
+    </div>
+{% endblock %}

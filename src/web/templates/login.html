@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <h1>Welcome to Text Recognition App!</h1>
+    <h2>To get started, login to your Google Account:</h2>
+    <div class="g-signin2 mt-3" data-onsuccess="signIn" data-width="360" data-height="75" data-longtitle="true"
+        data-theme="dark"></div>
+</div>
+{% endblock %}
