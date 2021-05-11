@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'text-recognizer',
+      '--source', 'cloud-functions/text-recognizer/src/',
+      '--region', 'europe-central2',
+      '--runtime', 'python39',
+      '--entry-point', 'main',
+      '--trigger-bucket', '${_SOURCE_BUCKET}',
+      '--set-env-vars', 'TOPIC_NAME=${_TOPIC_NAME}'
+    ]
+timeout: "600s"
