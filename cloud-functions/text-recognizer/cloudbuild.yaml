@@ -2,9 +2,10 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'functions', 'deploy', 'text-recognizer',
+      '--region', 'europe-central2',
       '--source', 'cloud-functions/text-recognizer/src/',
       '--runtime', 'python39',
       '--entry-point', 'main',
       '--trigger-bucket', '${_TRIGGER_BUCKET}',
-      '--set-env-vars', 'TOPIC_NAME=${_TOPIC_NAME}'
+      '--set-env-vars', 'TOPIC_NAME=${_TOPIC_NAME},PROJECT_ID=$PROJECT_ID'
     ]

@@ -2,7 +2,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'functions', 'deploy', 'email-notifier',
-      '--source', 'src/',
+      '--source', 'cloud-functions/email-notifier/src/',
       '--region', 'europe-central2',
       '--runtime', 'python39',
       '--entry-point', 'main',

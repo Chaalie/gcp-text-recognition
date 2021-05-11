@@ -10,8 +10,8 @@ MIN_WIDTH = 1024
 MIN_HEIGHT = 768
 
 def main(file_data, context):
-    src_file_name = file_data["name"]
-    src_bucket_name = file_data["bucket"]
+    src_file_name = file_data['name']
+    src_bucket_name = file_data['bucket']
 
     print(f'processing: gs://{src_bucket_name}/{src_file_name}')
 
@@ -28,7 +28,7 @@ def main(file_data, context):
         else:
             scaled_height = round(scaled_width / ratio)
 
-        print(f"transforming {image.width}x{image.height},{image.format} -> {scaled_width}x{scaled_height},jpeg")
+        print(f'transforming {image.width}x{image.height},{image.format} -> {scaled_width}x{scaled_height},jpeg')
 
         image.format = 'jpeg'
         image.resize(scaled_width, scaled_height)
