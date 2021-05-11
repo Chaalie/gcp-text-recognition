@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'email-notifier',
+      '--source', 'src/',
+      '--region', 'europe-central2',
+      '--runtime', 'python39',
+      '--entry-point', 'main',
+      '--trigger-topic', '${_TRIGGER_TOPIC}',
+    ]
+timeout: "600s"
