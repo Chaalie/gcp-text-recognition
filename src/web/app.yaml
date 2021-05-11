@@ -1,0 +1,11 @@
+runtime: python39
+env: standard
+
+handlers:
+- url: /static
+  static_dir: static
+- url: /.*
+  script: auto
+
+env_variables:
+  CONFIG_SECRET_ID: projects/909823663/secrets/text-recognition-web-config/versions/latest

@@ -27,16 +27,37 @@
                 </div>
             </div>
         </nav>
+        {% with successes = get_flashed_messages(category_filter=["upload_success"]) %}
+            {% if successes %}
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Your file was successfully uploaded!</h4>
+                    <p>It will be processed as soon as possible. You will be noticed when your text recognition is ready via your email adress.</p>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% with errors = get_flashed_messages(category_filter=["upload_error"]) %}
+            {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Your file upload has failed!</h4>
+                    <ul>
+                    {%- for msg in errors %}
+                        <li>{{ msg }}</li>
+                    {% endfor -%}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
     </header>
 {% endblock %}
 
 {% block main %}
-<div class="d-flex flex-column justify-content-center h-100">
+
+    <div class="d-flex flex-column justify-content-center h-100">
+
         <h1 class="mb-3">Recognize text on your photo:</h1>
-        <form action="/recognize">
-            <div class="mb-3 w-50">
-                <input class="form-control form-control-lg" type="file" id="file" required>
-            </div>
+        <form action="/recognize" method="POST" enctype="multipart/form-data">
+            <input class="form-control form-control-lg w-50" type="file" name="file" required>
+            <h6 class="ms-3 mb-3">Supported extensions are: <strong>.png, .jpg, .jpeg</strong></h1>
             <button type="submit" class="btn btn-primary btn-lg">Upload</button>
         </form>
     </div>
