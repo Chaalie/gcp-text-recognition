@@ -40,8 +40,6 @@ def main(event, context):
                 expiration=datetime.timedelta(days=1),
                 version='v4')
 
-    print(f'Sending email to: {data["sender_email"]}')
-
     mail_data = {
         'personalizations': [
             {

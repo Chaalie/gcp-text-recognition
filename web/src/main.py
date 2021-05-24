@@ -43,6 +43,13 @@ def logout():
 def home():
     return render_template('index.html', user=request.environ['user'], CLIENT_ID=app.config['CLIENT_ID'])
 
+@app.route('/check-duplicate', methods=['POST'])
+@require_authentication
+def check_duplicate():
+    return {
+        'duplicate': file_was_processed(request.form['hash'])
+    }
+
 @app.route('/recognize', methods=['POST'])
 @require_authentication
 def recognize():
@@ -55,28 +62,25 @@ def recognize():
 
     file_content = file.read()
     file_dig = hashlib.md5(file_content).hexdigest()
+    file_id = str(uuid.uuid4())
+
+    # upload image to bucket
+    bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
+    blob = bucket.blob(file_id)
+    blob.upload_from_string(
+        file_content,
+        content_type=file.content_type
+    )
 
     db = firestore.Client()
-    if file_was_processed(file_dig, db=db):
-        flash('', 'upload_duplicate')
-    else:
-        file_id = str(uuid.uuid4())
+    db.collection('text-recognitions').document(file_id).set({
+        'file_digest': file_dig,
+        'file_name': file.filename,
+        'sender_email': request.environ['user']['email'],
+        'sender_firstname': request.environ['user']['given_name']
+    })
 
-        bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
-        blob = bucket.blob(file_id)
-        blob.upload_from_string(
-            file_content,
-            content_type=file.content_type
-        )
-
-        db.collection('text-recognitions').document(file_id).set({
-            'file_digest': file_dig,
-            'file_name': file.filename,
-            'sender_email': request.environ['user']['email'],
-            'sender_firstname': request.environ['user']['given_name']
-        })
-
-        flash('', 'upload_success')
+    flash('', 'upload_success')
 
     return redirect(url_for('home'))
 

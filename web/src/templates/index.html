@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block head %}
+    <script src="{{ url_for('static', filename='js/spark-md5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
 
@@ -35,14 +36,6 @@
                 </div>
             {% endif %}
         {% endwith %}
-        {% with duplicates = get_flashed_messages(category_filter=["upload_duplicate"]) %}
-            {% if duplicates %}
-                <div class="alert alert-warning" role="alert">
-                    <h4 class="alert-heading">We found out, that the file you uploaded was already processed!</h4>
-                    <p>If you still want to receive an email with a recognized text from this image, please <strong>click here</strong>.</p>
-                </div>
-            {% endif %}
-        {% endwith %}
         {% with errors = get_flashed_messages(category_filter=["upload_error"]) %}
             {% if errors %}
                 <div class="alert alert-danger" role="alert">
@@ -64,9 +57,15 @@
 
         <h1 class="mb-3">Recognize text on your photo:</h1>
         <form action="/recognize" method="POST" enctype="multipart/form-data">
-            <input class="form-control form-control-lg w-50" type="file" name="file" required>
+            <input class="form-control form-control-lg w-50" id="file-input" type="file" name="file" required>
             <h6 class="ms-3 mb-3">Supported extensions are: <strong>.png, .jpg, .jpeg</strong></h1>
-            <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+            <div class="alert alert-warning" role="alert" id="duplicate-warning" style="display:none;">
+                <h6 class="alert-heading">We found out, that the file you have choosen was already processed!</h6>
+                <span>If you want you can still continue and process the image again.</span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="submit">
+                Upload
+            </button>
         </form>
     </div>
 {% endblock %}
