@@ -27,7 +27,7 @@ def login():
     if request.environ['user'] is not None:
         return redirect(url_for('home'))
     else:
-        return render_template('login.html', CLIENT_ID=app.config['CLIENT_ID'])
+        return render_template('login.html', CLIENT_ID=app.config['OAUTH_CLIENT_ID'])
 
 
 # Logout action, removes authentication token from cookies
@@ -41,7 +41,7 @@ def logout():
 @app.route('/', methods=['GET'])
 @require_authentication
 def home():
-    return render_template('index.html', user=request.environ['user'], CLIENT_ID=app.config['CLIENT_ID'])
+    return render_template('index.html', user=request.environ['user'], CLIENT_ID=app.config['OAUTH_CLIENT_ID'])
 
 @app.route('/check-duplicate', methods=['POST'])
 @require_authentication
@@ -65,7 +65,7 @@ def recognize():
     file_id = str(uuid.uuid4())
 
     # upload image to bucket
-    bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
+    bucket = storage.Client().get_bucket(app.config['IMAGES_BUCKET_NAME'])
     blob = bucket.blob(file_id)
     blob.upload_from_string(
         file_content,

@@ -37,7 +37,7 @@ class AuthMiddleware():
             user_info = id_token.verify_oauth2_token(
                 auth_token,
                 GOOGLE_AUTH_REQUEST_ADAPTER,
-                self.app.config['CLIENT_ID'])
+                self.app.config['OAUTH_CLIENT_ID'])
             environ['user'] = { k:v for k,v in user_info.items() if k in self.USER_INFO_FIELDS }
         except ValueError:
             environ['user'] = None

@@ -1,4 +1,12 @@
 steps:
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy", "web/src/app.yaml"]
-timeout: "600s"
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: bash
+  args:
+  - '-c'
+  - |
+    sed -i\
+      -e 's|\$${OAUTH_CLIENT_ID}|${_OAUTH_CLIENT_ID}|g'\
+      -e 's|\$${IMAGES_BUCKET_NAME}|${_IMAGES_BUCKET_NAME}|g'\
+      -e 's|\$${SECRET_KEY_RESOURCE_ID}|${_SECRET_KEY_RESOURCE_ID}|g'\
+      web/src/app.yaml
+    gcloud app deploy web/src/app.yaml
