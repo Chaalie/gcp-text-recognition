@@ -1,6 +1,4 @@
 window.addEventListener('load', function () {
-    $('#sign-out').onclick = signOut;
-
     $('#file-input').on('change', function (ev) {
         hideDuplicateWarning();
         showLoadingState();
