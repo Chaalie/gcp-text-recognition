@@ -7,5 +7,7 @@ steps:
       '--runtime', 'python39',
       '--entry-point', 'main',
       '--trigger-topic', '${_TRIGGER_TOPIC}',
-      '--set-env-vars', 'SENDGRID_API_KEY_SECRET_NAME=${_SENDGRID_API_KEY_SECRET_NAME}'
+      '--set-env-vars', 'SENDGRID_API_KEY_SECRET_NAME=${_SENDGRID_API_KEY_SECRET_NAME}',
+      '--set-env-vars', 'ORIGINAL_IMAGES_BUCKET_NAME=${_ORIGINAL_IMAGES_BUCKET_NAME}',
+      '--set-env-vars', 'TRANSFORMED_IMAGES_BUCKET_NAME=${_TRANSFORMED_IMAGES_BUCKET_NAME}'
     ]

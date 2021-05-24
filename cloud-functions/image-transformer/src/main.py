@@ -44,9 +44,5 @@ def main(file_data, context):
     dest_blob = dest_bucket.blob(dest_file_id)
     dest_blob.upload_from_filename(tmp_filename, content_type='jpeg')
 
-    db.collection('text-recognitions').document(src_file_id).update({
-        'transformed_file': f'https://storage.googleapis.com/{dest_bucket_name}/{dest_file_id}'
-    })
-
     os.remove(tmp_filename)
     

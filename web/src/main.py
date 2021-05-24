@@ -1,6 +1,7 @@
 from flask import Flask, flash, render_template, redirect, request, url_for, Markup
 from google.cloud import storage, firestore
 
+import uuid
 import hashlib
 
 from auth import AuthMiddleware, require_authentication
@@ -9,6 +10,17 @@ ALLOWED_UPLOADS_EXTENSIONS = {'.png', '.jpg', '.jpeg'}
 
 app = Flask(__name__)
 app.wsgi_app = AuthMiddleware(app)
+
+def file_was_processed(file_dig, db=None):
+    if db is None:
+        db = firestore.Client()
+
+    res = db.collection('text-recognitions')\
+        .where('file_digest', '==', file_dig)\
+        .limit(1)\
+        .get()
+
+    return len(res) == 1
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -42,13 +54,14 @@ def recognize():
         return redirect(url_for('home'))
 
     file_content = file.read()
-    file_id = hashlib.md5(file_content).hexdigest()
+    file_dig = hashlib.md5(file_content).hexdigest()
 
     db = firestore.Client()
-    file_ref = db.collection('text-recognitions').document(file_id)
-    if file_ref.get().exists:
+    if file_was_processed(file_dig, db=db):
         flash('', 'upload_duplicate')
     else:
+        file_id = str(uuid.uuid4())
+
         bucket = storage.Client().get_bucket(app.config['CLOUD_STORAGE_BUCKET'])
         blob = bucket.blob(file_id)
         blob.upload_from_string(
@@ -56,9 +69,9 @@ def recognize():
             content_type=file.content_type
         )
 
-        file_ref.set({
+        db.collection('text-recognitions').document(file_id).set({
+            'file_digest': file_dig,
             'file_name': file.filename,
-            'original_file': f'https://storage.googleapis.com/{bucket.name}/{blob.name}',
             'sender_email': request.environ['user']['email'],
             'sender_firstname': request.environ['user']['given_name']
         })
