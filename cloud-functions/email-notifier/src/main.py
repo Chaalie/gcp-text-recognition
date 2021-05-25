@@ -10,7 +10,7 @@ import sendgrid
 db = firestore.Client()
 secret_client = secretmanager.SecretManagerServiceClient()
 ORIGINAL_IMAGES_BUCKET_NAME = os.environ.get('ORIGINAL_IMAGES_BUCKET_NAME')
-TRANSFORMED_IMAGES_BUCKET_NAME = os.environ.get('ORIGINAL_IMAGES_BUCKET_NAME')
+TRANSFORMED_IMAGES_BUCKET_NAME = os.environ.get('TRANSFORMED_IMAGES_BUCKET_NAME')
 SENDGRID_API_KEY_SECRET_NAME = os.environ.get('SENDGRID_API_KEY_SECRET_NAME')
 SENDGRID_API_KEY = secret_client.access_secret_version(name=SENDGRID_API_KEY_SECRET_NAME).payload.data.decode('UTF-8')
 sg = sendgrid.SendGridAPIClient(SENDGRID_API_KEY)
