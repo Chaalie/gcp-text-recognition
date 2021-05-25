@@ -4,8 +4,10 @@ env: standard
 handlers:
 - url: /static
   static_dir: static
+  secure: always
 - url: /.*
   script: auto
+  secure: always
 
 env_variables:
   SECRET_KEY_RESOURCE_ID: ${SECRET_KEY_RESOURCE_ID}
